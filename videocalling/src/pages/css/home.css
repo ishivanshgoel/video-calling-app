@@ -1,0 +1,20 @@
+.homepage_main{
+    display: flex;
+    height: 100vh;
+}
+
+.homepage_main_left{
+    flex: 0.5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.homepage_main_right{
+    flex: 0.5;
+}
+
+.homepage_main_left_button{
+
+}

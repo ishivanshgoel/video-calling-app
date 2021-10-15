@@ -1,0 +1,20 @@
+{
+  "name": "videocallingapp",
+  "version": "1.0.0",
+  "description": "simple video calling application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ishivanshgoel",
+  "license": "ISC",
+  "dependencies": {
+    "@emotion/react": "^11.4.1",
+    "@emotion/style": "^0.8.0",
+    "@emotion/styled": "^11.3.0",
+    "@mui/material": "^5.0.4",
+    "socket.io": "^4.3.0",
+    "styled-components": "^5.3.1",
+    "uuid": "^8.3.2"
+  }
+}
