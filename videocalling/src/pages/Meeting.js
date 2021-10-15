@@ -13,6 +13,7 @@ function Meeting() {
 
     let { id } = useParams();
     const [name, setName] = useState('')
+    const [peers, setPeers] = useState({})
 
     const history = useHistory()
     const myVideo = useRef() // reference to local video
@@ -33,6 +34,25 @@ function Meeting() {
     async function openStream() {
         let cons = setConstraints()
         return await navigator.mediaDevices.getUserMedia(cons);
+    }
+
+    // add video stream to grid
+    function add(videoStream, name) {
+        let Scenary = document.getElementById('Dish');
+        let Camera = document.createElement('video');
+        Camera.className = 'Camera';
+        Camera.setAttribute('id', name)
+        Camera.srcObject = videoStream
+        Camera.addEventListener('loadedmetadata', () => {
+            Camera.play()
+        })
+        Scenary.appendChild(Camera);
+    }
+
+    // remove
+    function less(name) {
+        let removeCamera = document.getElementById(name)
+        removeCamera.parentNode.removeChild(removeCamera)
     }
 
 
@@ -57,6 +77,8 @@ function Meeting() {
         peer.on('call', call => {
 
             // metadata from call
+            let metadata = call.metadata
+            let name = metadata.name
 
             // send you stream
             call.answer(myStreamGlobal)
@@ -64,6 +86,7 @@ function Meeting() {
             // append user stream to grid
             call.on('stream', (stream) => {
                 console.log('Getting Peers stream')
+                add(stream, name)
             })
 
         })
@@ -82,12 +105,13 @@ function Meeting() {
 
             call.on('stream', userVideoStream => {
                 console.log('Getting User video stream')
+                add(userVideoStream, name)
             }
             )
 
             // close video
             call.on('close', () => {
-                console.log('User Left')
+                less(name)
             })
         }
 
