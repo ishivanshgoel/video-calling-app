@@ -5,9 +5,10 @@ import {
 import { io } from 'socket.io-client';
 import { useHistory } from "react-router-dom";
 import Peer from 'peerjs';
+import URL from '../config/baseurl'
+import Button from '@mui/material/Button';
 
-const socket = io('http://localhost:5000/')
-
+const socket = io(URL)
 
 function Meeting() {
 
@@ -66,7 +67,9 @@ function Meeting() {
         let n = window.prompt('Enter Name')
         setName(n)
 
-        socket.emit("joinroom", { name: n, room: id, peerId: 22 });
+        socket.emit("joinroom", { name: n, room: id });
+
+        socket.emit("send-message", { from: n, message: `${n} Joined the Meeting` });
 
         let myStreamGlobal = await openStream()
         myVideo.current.srcObject = myStreamGlobal
@@ -96,6 +99,10 @@ function Meeting() {
             connectPeers(data.name)
         });
 
+        socket.on("new-message", (data)=>{
+            alert(`New Notification from ${data.from} - ${data.message}`)
+        })
+
         // when someone joins our room, call them using their peer id
         function connectPeers(name) {
             // send userId in metadata of call
@@ -117,9 +124,19 @@ function Meeting() {
 
     }, [])
 
+    const sendMessage = ()=>{
+        let message = window.prompt('Enter Notification')
+        socket.emit("send-message", { from: name, message: message });
+    }
+
     return (
         <div>
-            Meeting {id} {name}
+            <div style={{margin: 20}}>
+                <b>Meeting Id:</b> {id}
+                &nbsp; &nbsp; &nbsp;<b>My Name:</b> {name}
+                <br></br> 
+                <Button variant="contained" onClick={sendMessage}>Send Notification</Button>
+            </div>
             <div id="Dish">
                 <video ref={myVideo} autoPlay className="Camera" muted="muted"></video>
             </div>

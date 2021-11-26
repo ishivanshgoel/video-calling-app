@@ -35,6 +35,12 @@ io.on('connection', client => {
         client.join(data.room);
         io.to(data.room).emit("addpartcipant", data)
         console.log('Room ', data)
+
+        client.on('send-message', ({ from, message })=>{
+            console.log("Message ", message)
+            client.broadcast.to(data.room).emit('new-message', {from, message})
+        });
+
     });
 
 });

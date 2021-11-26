@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useHistory } from "react-router-dom";
+import URL from '../config/baseurl'
 import './css/home.css'
 
 export default function SimpleContainer() {
@@ -10,7 +11,7 @@ export default function SimpleContainer() {
   let history = useHistory()
 
   const newMeeting = async()=>{
-    let url = 'http://localhost:5000/newCall'
+    let url = URL + 'newCall'
     try{
       const response = await fetch( url, {
         method: 'GET',
